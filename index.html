@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Royal Wedding Invitation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gold-light: #F4E4BC;
+            --gold-mid: #D4AF37;
+            --gold-dark: #AA771C;
+            --gold-deep: #8B6914;
+            --maroon: #2D0A0F;
+            --maroon-light: #4A121A;
+            --black: #0A0A0A;
+            --cream: #FDF6E3;
+        }
+
+        body {
+            background: var(--black);
+            color: var(--gold-light);
+            font-family: 'Cormorant Garamond', serif;
+            overflow-x: hidden;
+            cursor: default;
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--black);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--gold-dark), var(--gold-mid));
+            border-radius: 3px;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.3)); }
+            50% { filter: drop-shadow(0 0 40px rgba(212, 175, 55, 0.6)); }
+        }
+
+        @keyframes lightSweep {
+            0% { left: -100%; }
+            100% { left: 200%; }
+        }
+
+        @keyframes crownBob {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-5px) scale(1.02); }
+        }
+
+        @keyframes rotate-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* ===== INTRO OVERLAY ===== */
+        #intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, var(--maroon) 0%, var(--black) 70%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 2s ease, visibility 2s ease;
+        }
+
+        #intro-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .intro-content {
+            text-align: center;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        /* Ganesh Emblem Container */
+        .ganesh-container {
+            position: relative;
+            width: 280px;
+            height: 320px;
+            margin: 0 auto 40px;
+        }
+
+        /* Crown above Ganesh */
+        .crown-above {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 80px;
+            animation: crownBob 3s ease-in-out infinite;
+            z-index: 10;
+        }
+
+        .crown-above svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 4px 15px rgba(212, 175, 55, 0.5));
+        }
+
+        /* Ganesh SVG */
+        .ganesh-emblem {
+            width: 220px;
+            height: 220px;
+            margin: 60px auto 0;
+            position: relative;
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+
+        .ganesh-emblem svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Ornamental rings */
+        .ring-outer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -40%);
+            width: 260px;
+            height: 260px;
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            border-radius: 50%;
+            animation: rotate-slow 30s linear infinite;
+        }
+
+        .ring-inner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -40%);
+            width: 240px;
+            height: 240px;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            border-radius: 50%;
+            animation: rotate-slow 25s linear infinite reverse;
+        }
+
+        .intro-text {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            color: var(--gold-mid);
+            margin-top: 30px;
+            opacity: 0.8;
+        }
+
+        .intro-sub {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem;
+            color: var(--gold-dark);
+            margin-top: 10px;
+            font-style: italic;
+            letter-spacing: 2px;
+        }
+
+        .enter-btn {
+            margin-top: 50px;
+            padding: 16px 50px;
+            background: transparent;
+            border: 1px solid var(--gold-dark);
+            color: var(--gold-mid);
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .enter-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .enter-btn:hover::before {
+            left: 100%;
+        }
+
+        .enter-btn:hover {
+            border-color: var(--gold-mid);
+            color: var(--gold-light);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+            letter-spacing: 6px;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            opacity: 0;
+            transition: opacity 2s ease;
+        }
+
+        .main-content.visible {
+            opacity: 1;
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero-section {
+            min-height: 100vh;
+            background: radial-gradient(ellipse at center, var(--maroon) 0%, var(--black) 60%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 80px 20px;
+            overflow: hidden;
+        }
+
+        /* Palace silhouette background */
+        .palace-bg {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            opacity: 0.08;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23D4AF37' d='M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,224C672,245,768,267,864,250.7C960,235,1056,181,1152,165.3C1248,149,1344,171,1392,181.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: bottom;
+            background-size: cover;
+            pointer-events: none;
+        }
+
+        .hero-crest {
+            margin-bottom: 40px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1.5s ease;
+        }
+
+        .hero-crest.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hero-crest svg {
+            width: 80px;
+            height: 80px;
+            filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.4));
+        }
+
+        .invitation-label {
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            letter-spacing: 10px;
+            text-transform: uppercase;
+            color: var(--gold-dark);
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1.5s ease 0.3s;
+        }
+
+        .invitation-label.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Couple Frame */
+        .couple-frame-container {
+            position: relative;
+            width: 340px;
+            height: 420px;
+            margin: 0 auto 50px;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 2s ease 0.5s;
+        }
+
+        .couple-frame-container.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        @media (min-width: 768px) {
+            .couple-frame-container {
+                width: 450px;
+                height: 550px;
+            }
+        }
+
+        .royal-frame {
+            position: absolute;
+            inset: 0;
+            border: 3px solid transparent;
+            border-image: linear-gradient(135deg, var(--gold-dark), var(--gold-mid), var(--gold-light), var(--gold-mid), var(--gold-dark)) 1;
+            box-shadow: 
+                inset 0 0 60px rgba(212, 175, 55, 0.1),
+                0 0 40px rgba(212, 175, 55, 0.15),
+                0 0 80px rgba(212, 175, 55, 0.05);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .frame-corner {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--gold-mid);
+            z-index: 3;
+        }
+
+        .frame-corner.tl { top: -2px; left: -2px; border-right: none; border-bottom: none; }
+        .frame-corner.tr { top: -2px; right: -2px; border-left: none; border-bottom: none; }
+        .frame-corner.bl { bottom: -2px; left: -2px; border-right: none; border-top: none; }
+        .frame-corner.br { bottom: -2px; right: -2px; border-left: none; border-top: none; }
+
+        .couple-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: sepia(20%) contrast(1.1) brightness(0.95);
+        }
+
+        .photo-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--maroon), var(--maroon-light));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .photo-placeholder svg {
+            width: 100px;
+            height: 100px;
+            opacity: 0.4;
+            margin-bottom: 20px;
+        }
+
+        .photo-placeholder-text {
+            font-family: 'Cinzel', serif;
+            color: var(--gold-dark);
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        /* Glowing edges */
+        .glow-edge {
+            position: absolute;
+            inset: -10px;
+            background: radial-gradient(ellipse at center, transparent 60%, rgba(212, 175, 55, 0.15) 100%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Couple Names */
+        .couple-names {
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1.5s ease 0.8s;
+        }
+
+        .couple-names.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .name-engraved {
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            background: linear-gradient(180deg, 
+                var(--gold-light) 0%, 
+                var(--gold-mid) 30%, 
+                var(--gold-dark) 50%, 
+                var(--gold-mid) 70%, 
+                var(--gold-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+            letter-spacing: 4px;
+            line-height: 1.3;
+            position: relative;
+            display: inline-block;
+        }
+
+        .name-engraved::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255,255,255,0.4) 50%, 
+                transparent 100%);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s infinite;
+            pointer-events: none;
+        }
+
+        .name-separator {
+            display: block;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.5rem;
+            color: var(--gold-dark);
+            margin: 10px 0;
+            opacity: 0.7;
+        }
+
+        .wedding-date {
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            letter-spacing: 6px;
+            color: var(--gold-dark);
+            margin-top: 25px;
+            text-transform: uppercase;
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: float 2s ease-in-out infinite;
+            opacity: 0.5;
+        }
+
+        /* ===== PARENTS SECTION ===== */
+        .parents-section {
+            background: linear-gradient(180deg, var(--black) 0%, var(--maroon) 50%, var(--black) 100%);
+            padding: 120px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-crest {
+            text-align: center;
+            margin-bottom: 60px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1.5s ease;
+        }
+
+        .section-crest.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-crest svg {
+            width: 50px;
+            height: 50px;
+            opacity: 0.6;
+        }
+
+        .lineage-title {
+            text-align: center;
+            font-family: 'Cinzel', serif;
+            font-size: 0.8rem;
+            letter-spacing: 12px;
+            text-transform: uppercase;
+            color: var(--gold-dark);
+            margin-bottom: 80px;
+            opacity: 0;
+            transition: all 1.5s ease 0.2s;
+        }
+
+        .lineage-title.visible {
+            opacity: 1;
+        }
+
+        /* Genealogy Tree */
+        .genealogy-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .generation {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 60px;
+            flex-wrap: wrap;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .generation.bride-side,
+        .generation.groom-side {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1.5s ease;
+        }
+
+        .generation.bride-side.visible,
+        .generation.groom-side.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .parent-card {
+            text-align: center;
+            position: relative;
+            padding: 30px 40px;
+            min-width: 280px;
+        }
+
+        .parent-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold-dark), transparent);
+        }
+
+        .parent-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold-dark), transparent);
+        }
+
+        .parent-label {
+            font-family: 'Cinzel', serif;
+            font-size: 0.65rem;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: var(--gold-deep);
+            margin-bottom: 15px;
+            opacity: 0.7;
+        }
+
+        .parent-name {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--gold-light);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            line-height: 1.4;
+        }
+
+        .parent-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem;
+            color: var(--gold-dark);
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        .connector {
+            width: 1px;
+            height: 50px;
+            background: linear-gradient(180deg, var(--gold-dark), transparent);
+            margin: 0 auto;
+            opacity: 0.5;
+        }
+
+        .generation-label {
+            text-align: center;
+            font-family: 'Cinzel', serif;
+            font-size: 0.7rem;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            color: var(--gold-mid);
+            margin: 30px 0;
+            position: relative;
+            opacity: 0;
+            transition: all 1.5s ease;
+        }
+
+        .generation-label.visible {
+            opacity: 1;
+        }
+
+        .generation-label::before,
+        .generation-label::after {
+            content: '◆';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.5rem;
+            color: var(--gold-dark);
+            opacity: 0.5;
+        }
+
+        .generation-label::before {
+            left: calc(50% - 80px);
+        }
+
+        .generation-label::after {
+            right: calc(50% - 80px);
+        }
+
+        /* ===== VENUE SECTION ===== */
+        .venue-section {
+            min-height: 100vh;
+            background: radial-gradient(ellipse at center, var(--maroon-light) 0%, var(--black) 70%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .venue-ornament {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border: 1px solid rgba(212, 175, 55, 0.05);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .venue-ornament:nth-child(2) {
+            width: 500px;
+            height: 500px;
+            border-color: rgba(212, 175, 55, 0.08);
+        }
+
+        .venue-ornament:nth-child(3) {
+            width: 400px;
+            height: 400px;
+            border-color: rgba(212, 175, 55, 0.12);
+        }
+
+        .palace-icon {
+            margin-bottom: 50px;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 1.5s ease;
+        }
+
+        .palace-icon.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .palace-icon svg {
+            width: 100px;
+            height: 100px;
+            filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.3));
+        }
+
+        .venue-announcement {
+            text-align: center;
+            max-width: 700px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1.5s ease 0.3s;
+        }
+
+        .venue-announcement.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .venue-label {
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            letter-spacing: 10px;
+            text-transform: uppercase;
+            color: var(--gold-dark);
+            margin-bottom: 30px;
+        }
+
+        .venue-name {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 700;
+            color: var(--gold-light);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            line-height: 1.3;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .venue-name::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold-mid), transparent);
+        }
+
+        .venue-address {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            color: var(--gold-mid);
+            margin-top: 30px;
+            line-height: 1.8;
+            font-style: italic;
+        }
+
+        .venue-date-box {
+            margin-top: 50px;
+            padding: 30px 50px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            position: relative;
+            display: inline-block;
+            opacity: 0;
+            transition: all 1.5s ease 0.6s;
+        }
+
+        .venue-date-box.visible {
+            opacity: 1;
+        }
+
+        .venue-date-box::before,
+        .venue-date-box::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 1px solid var(--gold-mid);
+        }
+
+        .venue-date-box::before {
+            top: -1px;
+            left: -1px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .venue-date-box::after {
+            bottom: -1px;
+            right: -1px;
+            border-left: none;
+            border-top: none;
+        }
+
+        .date-main {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: var(--gold-light);
+            letter-spacing: 4px;
+        }
+
+        .date-sub {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem;
+            color: var(--gold-dark);
+            margin-top: 8px;
+        }
+
+        .muhurtham {
+            margin-top: 40px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.8rem;
+            letter-spacing: 4px;
+            color: var(--gold-mid);
+            text-transform: uppercase;
+        }
+
+        .muhurtham-time {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--gold-light);
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer-section {
+            background: var(--black);
+            padding: 60px 20px;
+            text-align: center;
+            border-top: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .footer-blessing {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            color: var(--gold-dark);
+            font-style: italic;
+            letter-spacing: 1px;
+            line-height: 1.8;
+        }
+
+        .footer-family {
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            letter-spacing: 6px;
+            color: var(--gold-deep);
+            margin-top: 20px;
+            text-transform: uppercase;
+            opacity: 0.6;
+        }
+
+        /* ===== SHIMMER HOVER EFFECT ===== */
+        .shimmer-hover {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shimmer-hover::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: skewX(-25deg);
+            transition: left 0.7s ease;
+        }
+
+        .shimmer-hover:hover::after {
+            left: 200%;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .generation {
+                gap: 30px;
+            }
+            .parent-card {
+                min-width: 240px;
+                padding: 25px 30px;
+            }
+            .venue-ornament {
+                width: 300px;
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- INTRO OVERLAY -->
+    <div id="intro-overlay">
+        <div class="intro-content">
+            <div class="ganesh-container">
+                <!-- Crown -->
+                <div class="crown-above">
+                    <svg viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M60 15 L60 5 M30 25 L20 10 M90 25 L100 10" stroke="#D4AF37" stroke-width="1.5" opacity="0.6"/>
+                        <path d="M60 20 C60 20 50 5 40 15 C30 25 35 35 25 30 C15 25 10 35 15 45 C20 55 30 50 35 55 C40 60 50 55 60 55 C70 55 80 60 85 55 C90 50 100 55 105 45 C110 35 105 25 95 30 C85 35 90 25 80 15 C70 5 60 20 60 20Z" fill="url(#crownGrad)" stroke="#AA771C" stroke-width="1"/>
+                        <circle cx="60" cy="18" r="4" fill="#F4E4BC"/>
+                        <circle cx="25" cy="32" r="3" fill="#D4AF37"/>
+                        <circle cx="95" cy="32" r="3" fill="#D4AF37"/>
+                        <circle cx="60" cy="45" r="5" fill="#D4AF37" opacity="0.8"/>
+                        <defs>
+                            <linearGradient id="crownGrad" x1="60" y1="10" x2="60" y2="60" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#F4E4BC"/>
+                                <stop offset="50%" stop-color="#D4AF37"/>
+                                <stop offset="100%" stop-color="#8B6914"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                
+                <!-- Decorative rings -->
+                <div class="ring-outer"></div>
+                <div class="ring-inner"></div>
+                
+                <!-- Ganesh Emblem -->
+                <div class="ganesh-emblem">
+                    <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Outer circle -->
+                        <circle cx="100" cy="100" r="95" stroke="url(#goldGrad1)" stroke-width="1" opacity="0.4"/>
+                        <circle cx="100" cy="100" r="85" stroke="url(#goldGrad1)" stroke-width="0.5" opacity="0.3"/>
+                        
+                        <!-- Ganesh Silhouette Stylized -->
+                        <g transform="translate(50, 30) scale(0.5)">
+                            <!-- Head -->
+                            <ellipse cx="100" cy="80" rx="45" ry="40" fill="url(#goldGrad2)" opacity="0.9"/>
+                            <!-- Ears -->
+                            <ellipse cx="55" cy="80" rx="12" ry="20" fill="url(#goldGrad2)" opacity="0.8"/>
+                            <ellipse cx="145" cy="80" rx="12" ry="20" fill="url(#goldGrad2)" opacity="0.8"/>
+                            <!-- Trunk -->
+                            <path d="M100 110 Q100 150 85 170 Q80 180 90 185 Q100 180 105 160 Q110 140 110 110" fill="url(#goldGrad2)" opacity="0.9"/>
+                            <!-- Tusks -->
+                            <path d="M85 115 Q75 130 70 125" stroke="#F4E4BC" stroke-width="3" fill="none" opacity="0.7"/>
+                            <path d="M115 115 Q125 130 130 125" stroke="#F4E4BC" stroke-width="3" fill="none" opacity="0.7"/>
+                            <!-- Crown -->
+                            <path d="M70 50 L75 30 L85 45 L100 20 L115 45 L125 30 L130 50 Z" fill="url(#goldGrad1)"/>
+                            <!-- Eyes -->
+                            <ellipse cx="85" cy="85" rx="6" ry="4" fill="#2D0A0F"/>
+                            <ellipse cx="115" cy="85" rx="6" ry="4" fill="#2D0A0F"/>
+                            <circle cx="87" cy="84" r="2" fill="#F4E4BC"/>
+                            <circle cx="117" cy="84" r="2" fill="#F4E4BC"/>
+                            <!-- Modak -->
+                            <circle cx="100" cy="140" r="12" fill="url(#goldGrad1)" opacity="0.9"/>
+                            <path d="M100 128 L100 152 M88 140 L112 140" stroke="#AA771C" stroke-width="1" opacity="0.5"/>
+                        </g>
+                        
+                        <!-- Decorative motifs -->
+                        <path d="M100 5 L100 15 M100 185 L100 195 M5 100 L15 100 M185 100 L195 100" stroke="#D4AF37" stroke-width="1" opacity="0.4"/>
+                        
+                        <defs>
+                            <linearGradient id="goldGrad1" x1="0" y1="0" x2="200" y2="200" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#F4E4BC"/>
+                                <stop offset="50%" stop-color="#D4AF37"/>
+                                <stop offset="100%" stop-color="#8B6914"/>
+                            </linearGradient>
+                            <linearGradient id="goldGrad2" x1="50" y1="30" x2="150" y2="180" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#D4AF37"/>
+                                <stop offset="100%" stop-color="#AA771C"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+            </div>
+            
+            <div class="intro-text">Śubha Vivāham</div>
+            <div class="intro-sub">A Royal Union</div>
+            
+            <button class="enter-btn shimmer-hover" onclick="enterInvitation()">Enter</button>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content" id="mainContent">
+        
+        <!-- HERO SECTION -->
+        <section class="hero-section">
+            <div class="palace-bg"></div>
+            
+            <div class="hero-crest" id="heroCrest">
+                <svg viewBox="0 0 80 80" fill="none">
+                    <circle cx="40" cy="40" r="38" stroke="#D4AF37" stroke-width="0.5" opacity="0.5"/>
+                    <path d="M40 10 L40 70 M10 40 L70 40" stroke="#D4AF37" stroke-width="0.5" opacity="0.3"/>
+                    <path d="M20 20 L60 60 M60 20 L20 60" stroke="#D4AF37" stroke-width="0.5" opacity="0.3"/>
+                    <circle cx="40" cy="40" r="5" fill="#D4AF37" opacity="0.8"/>
+                </svg>
+            </div>
+            
+            <div class="invitation-label" id="invitationLabel">The Honour of Your Presence is Requested</div>
+            
+            <div class="couple-frame-container" id="coupleFrame">
+                <div class="glow-edge"></div>
+                <div class="royal-frame">
+                    <div class="frame-corner tl"></div>
+                    <div class="frame-corner tr"></div>
+                    <div class="frame-corner bl"></div>
+                    <div class="frame-corner br"></div>
+                </div>
+                <!-- Replace src with actual couple photo -->
+                <div class="photo-placeholder">
+                    <svg viewBox="0 0 100 100" fill="none" stroke="#D4AF37" stroke-width="1">
+                        <circle cx="50" cy="35" r="20"/>
+                        <path d="M20 85 Q50 60 80 85"/>
+                    </svg>
+                    <span class="photo-placeholder-text">Couple Photo</span>
+                </div>
+            </div>
+            
+            <div class="couple-names" id="coupleNames">
+                <span class="name-engraved" data-text="Sri Lakshmi">Sri Lakshmi</span>
+                <span class="name-separator">&</span>
+                <span class="name-engraved" data-text="Venkata Narasimha Raju">Venkata Narasimha Raju</span>
+                <div class="wedding-date">Sunday, the 15th of June, 2026</div>
+            </div>
+            
+            <div class="scroll-indicator">
+                <svg width="30" height="40" viewBox="0 0 30 40" fill="none" stroke="#D4AF37" stroke-width="1">
+                    <rect x="2" y="2" width="26" height="36" rx="13"/>
+                    <line x1="15" y1="10" x2="15" y2="20"/>
+                </svg>
+            </div>
+        </section>
+
+        <!-- PARENTS SECTION -->
+        <section class="parents-section">
+            <div class="section-crest" id="parentsCrest">
+                <svg viewBox="0 0 50 50" fill="none">
+                    <path d="M25 5 L30 20 L45 20 L33 28 L38 43 L25 35 L12 43 L17 28 L5 20 L20 20 Z" fill="url(#smallGold)" opacity="0.6"/>
+                    <defs>
+                        <linearGradient id="smallGold" x1="5" y1="5" x2="45" y2="45">
+                            <stop offset="0%" stop-color="#F4E4BC"/>
+                            <stop offset="100%" stop-color="#8B6914"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            
+            <div class="lineage-title" id="lineageTitle">The Royal Lineage</div>
+            
+            <div class="genealogy-container">
+                <!-- Groom's Parents -->
+                <div class="generation-label" id="groomGenLabel">— The Groom's Family —</div>
+                <div class="generation groom-side" id="groomParents">
+                    <div class="parent-card shimmer-hover">
+                        <div class="parent-label">Father</div>
+                        <div class="parent-name">Sri Ramachandra Raju</div>
+                        <div class="parent-title">Garudapati Ramachandra Raju Bahadur</div>
+                    </div>
+                    <div class="parent-card shimmer-hover">
+                        <div class="parent-label">Mother</div>
+                        <div class="parent-name">Smt. Lakshmi Devi</div>
+                        <div class="parent-title">Rajkumari Lakshmi Devi</div>
+                    </div>
+                </div>
+                
+                <div class="connector"></div>
+                
+                <!-- Bride's Parents -->
+                <div class="generation-label" id="brideGenLabel">— The Bride's Family —</div>
+                <div class="generation bride-side" id="brideParents">
+                    <div class="parent-card shimmer-hover">
+                        <div class="parent-label">Father</div>
+                        <div class="parent-name">Sri Venkata Rao</div>
+                        <div class="parent-title">Zamindar Venkata Rao Varma</div>
+                    </div>
+                    <div class="parent-card shimmer-hover">
+                        <div class="parent-label">Mother</div>
+                        <div class="parent-name">Smt. Annapurna Devi</div>
+                        <div class="parent-title">Rani Annapurna Devi</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VENUE SECTION -->
+        <section class="venue-section">
+            <div class="venue-ornament"></div>
+            <div class="venue-ornament"></div>
+            <div class="venue-ornament"></div>
+            
+            <div class="palace-icon" id="palaceIcon">
+                <svg viewBox="0 0 100 100" fill="none" stroke="#D4AF37" stroke-width="1.2">
+                    <!-- Palace silhouette -->
+                    <path d="M10 90 L10 50 L20 50 L20 40 L30 40 L30 30 L25 25 L30 20 L35 25 L40 20 L45 25 L50 20 L55 25 L60 20 L65 25 L70 20 L75 25 L70 30 L70 40 L80 40 L80 50 L90 50 L90 90 Z" fill="url(#palaceGrad)" opacity="0.3"/>
+                    <path d="M10 90 L90 90" stroke-width="2"/>
+                    <rect x="25" y="60" width="8" height="12"/>
+                    <rect x="46" y="55" width="8" height="17"/>
+                    <rect x="67" y="60" width="8" height="12"/>
+                    <path d="M35 35 L50 25 L65 35" stroke-width="0.8" opacity="0.6"/>
+                    <circle cx="50" cy="18" r="3" fill="#D4AF37"/>
+                    <defs>
+                        <linearGradient id="palaceGrad" x1="10" y1="20" x2="90" y2="90">
+                            <stop offset="0%" stop-color="#D4AF37"/>
+                            <stop offset="100%" stop-color="#2D0A0F"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            
+            <div class="venue-announcement" id="venueAnnouncement">
+                <div class="venue-label">The Royal Venue</div>
+                <h2 class="venue-name">The Palace Grounds<br>Mysore</h2>
+                <div class="venue-address">
+                    Rajendra Vilas Palace<br>
+                    Chamundi Hill, Mysuru<br>
+                    Karnataka — 570010
+                </div>
+            </div>
+            
+            <div class="venue-date-box" id="venueDateBox">
+                <div class="date-main">15 June 2026</div>
+                <div class="date-sub">Sunday | Jyeshtha Shukla Paksha</div>
+            </div>
+            
+            <div class="muhurtham" id="muhurtham">
+                Muhurtham
+                <div class="muhurtham-time">9:29 AM — 10:15 AM</div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer-section">
+            <div class="footer-blessing">
+                "As the sacred fire witnesses their vows,<br>
+                may the divine bless this royal union<br>
+                with prosperity, love, and eternal grace."
+            </div>
+            <div class="footer-family">
+                The Royal Families
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Enter invitation
+        function enterInvitation() {
+            const overlay = document.getElementById('intro-overlay');
+            const main = document.getElementById('mainContent');
+            
+            overlay.classList.add('hidden');
+            main.classList.add('visible');
+            
+            // Trigger hero animations after transition
+            setTimeout(() => {
+                document.getElementById('heroCrest').classList.add('visible');
+                document.getElementById('invitationLabel').classList.add('visible');
+                document.getElementById('coupleFrame').classList.add('visible');
+                document.getElementById('coupleNames').classList.add('visible');
+            }, 500);
+        }
+
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements
+        document.addEventListener('DOMContentLoaded', () => {
+            const elements = [
+                'parentsCrest', 'lineageTitle', 'groomGenLabel', 'groomParents',
+                'brideGenLabel', 'brideParents', 'palaceIcon', 'venueAnnouncement',
+                'venueDateBox', 'muhurtham'
+            ];
+            
+            elements.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) observer.observe(el);
+            });
+        });
+
+        // Parallax effect for venue ornaments
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const ornaments = document.querySelectorAll('.venue-ornament');
+            ornaments.forEach((orn, i) => {
+                const speed = 0.1 + (i * 0.05);
+                orn.style.transform = `translate(-50%, -50%) translateY(${scrolled * speed}px)`;
+            });
+        });
+
+        // Mouse move light effect on hero
+        document.querySelector('.hero-section')?.addEventListener('mousemove', (e) => {
+            const rect = e.currentTarget.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            
+            e.currentTarget.style.background = `
+                radial-gradient(ellipse at ${x}% ${y}%, 
+                rgba(45, 10, 15, 0.9) 0%, 
+                rgba(10, 10, 10, 1) 60%)
+            `;
+        });
+    </script>
+</body>
+</html>
